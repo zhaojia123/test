@@ -33,12 +33,12 @@ class BookController extends Controller
         try {
             $params = json_decode($params,true);
             if (empty($params))
-                throw new Exception('数据错误');
+                throw new Exception('data error');
             $model = new WriteBook();
             $params['created_at'] = time();
             $is = $model->insert($params);
             if (!$is)
-                throw new Exception('保存失败');
+                throw new Exception('Save failed');
 
         } catch (Exception $e) {
             $this->results['code'] = $e->getCode();

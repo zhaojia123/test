@@ -231,7 +231,7 @@ class TVController extends Controller
 //        var_dump($request['dev_type']);exit;
         $data = $this->originalVersion($request['dev_type'],$request['dev_brand']);
         if (empty($data))
-            $results =  array('ret'=>1,'message'=>'获取版本信息失败','data'=>null);
+            $results =  array('ret'=>1,'message'=>'Failed to obtain version information','data'=>null);
         else
             $results =  array('ret'=>0,'message'=>null,'data'=>$data);
         return $results;
@@ -364,9 +364,9 @@ class TVController extends Controller
         try {
             //通过code里的变量判断是新老电视
             if (empty($tvInfo['app_channel_code']))
-                throw new Exception('您正在用新版App登陆旧版本的电视系统',2);
+                throw new Exception('You are using the new version of App to log on to the old version of the TV system',2);
             if(Redis::zscore('tv_qr_code',$qrCode)){
-                throw new Exception('二维码失效,请重试!',2);
+                throw new Exception('Two-dimensional code is invalid. Please try again!',2);
             }
             //验证用户信息
             $validate_url = $this->url.'/app_validate_user?t='.$t.'&v='.$v.'&f='.$f.'&mechanism_id='.$mechanism_id;
@@ -379,7 +379,7 @@ class TVController extends Controller
                 ];
                 $userData = $this->newAppValidateUser($data,$validate_url);
                 if (empty($userData))
-                    throw new Exception('用户不存在',1);
+                    throw new Exception('user does not exist',1);
                 Redis :: setex('user_' . $data['user_id'],$date,json_encode($userData));
 
                 $isAllow = $userData['user_type_id'];
@@ -390,13 +390,13 @@ class TVController extends Controller
                 ];
                 $userData = $this->AppValidateUser($data,$validate_url);
                 if (empty($userData))
-                    throw new Exception('用户不存在',1);
+                    throw new Exception('user does not exist',1);
                 Redis :: setex('user_' . $data['userid'],$date,json_encode($userData));
                 $isAllow = $userData['data']['usertype'];
             }
             //校验该用户是否有权限
             if($isAllow < 1){
-                throw new Exception('该用户没有权限',2);
+                throw new Exception('This user does not have permission',2);
             }
 
             //查询教师是否绑定电视
@@ -424,7 +424,7 @@ class TVController extends Controller
 //                        return array('ret'=>2,'message'=>'该设备无法切换到悦趣','data'=>null);
 //                    }
                     Redis::hset('tv_dev_type',$code.$tv_type,$m_type);
-                    return array('ret'=>2,'message'=>'正在切换系统，请稍等','data'=>null);
+                    return array('ret'=>2,'message'=>'Switching the system, please wait a moment','data'=>null);
                 }
             }
 
