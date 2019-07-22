@@ -362,7 +362,6 @@ class TVController extends Controller
         //把传过来的json md5，然后查找
         $qrCode = md5($request['code']);
 
-
         try {
             //通过code里的变量判断是新老电视
             if (empty($tvInfo['app_channel_code']))
@@ -371,7 +370,7 @@ class TVController extends Controller
                 throw new Exception('Two-dimensional code is invalid. Please try again!',2);
             }
             //验证用户信息
-            $validate_url = 'http://usa-test-api.wedomusic.cn/app_get_user_teacher_info?mechanism_id='.$mechanism_id;
+            $validate_url = 'http://usa-test-api.wedomusic.cn/app_validate_user?mechanism_id='.$mechanism_id;
             $params = [
                 'user_id' => $request['user_id'],
                 'token' => $request['token'],
