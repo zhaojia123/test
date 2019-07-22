@@ -218,12 +218,12 @@ define('CLASS_BACKGROUND','http://cdn.9beats.com/app/banji.png');
 
 //直播相关
 define('LOVETTL',30);
-define('BIZID','5261');
+define('BIZID','56264');
 define('VURL','http://living.9beats.com/');
 define('CREATEGROUPURL','https://console.tim.qq.com/v4/group_open_http_svc/create_group?');
 define('MESSAGEGROUPURL','https://console.tim.qq.com/v4/group_open_http_svc/send_group_msg?');
 define('SERVICEURL','http://service.9beats.com/get-sig.php?');
-define('GROUPADMIN','9beats_admin');
-define('GROUPAPPID','1400044303');
-define('LIVE_API_KEY','e9726e463a3f85577854e60c8e3fc10c');
+define('GROUPADMIN','admin123');
+define('GROUPAPPID','1400234389');
+define('LIVE_API_KEY','acd3366b25ad795ced3f33c0a301efb6');
 define('LIVE_APPID','1252905615');
