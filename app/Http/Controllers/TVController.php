@@ -17,7 +17,7 @@ use Exception;
 
 class TVController extends Controller
 {
-    public $url = 'http://api.9beats.com';
+    public $url = 'http://usa-test-tv.wedomusic.cn';
     public $newUrl = 'http://api.wedomusic.cn';
     public $vipList = [
         '82192057',
@@ -361,6 +361,8 @@ class TVController extends Controller
         //校验二维码是否有记录
         //把传过来的json md5，然后查找
         $qrCode = md5($request['code']);
+
+
         try {
             //通过code里的变量判断是新老电视
             if (empty($tvInfo['app_channel_code']))
@@ -369,36 +371,23 @@ class TVController extends Controller
                 throw new Exception('Two-dimensional code is invalid. Please try again!',2);
             }
             //验证用户信息
-            $validate_url = $this->url.'/app_validate_user?t='.$t.'&v='.$v.'&f='.$f.'&mechanism_id='.$mechanism_id;
-
-            //新老接口交替
-            if (empty($f)){
-                $data = [
-                    'user_id' => $userid,
-                    'token' => $token,
-                ];
-                $userData = $this->newAppValidateUser($data,$validate_url);
-                if (empty($userData))
-                    throw new Exception('user does not exist',1);
-                Redis :: setex('user_' . $data['user_id'],$date,json_encode($userData));
-
-                $isAllow = $userData['user_type_id'];
-            } else{
-                $data = [
-                    'userid' => $userid,
-                    'token' => $token,
-                ];
-                $userData = $this->AppValidateUser($data,$validate_url);
-                if (empty($userData))
-                    throw new Exception('user does not exist',1);
-                Redis :: setex('user_' . $data['userid'],$date,json_encode($userData));
-                $isAllow = $userData['data']['usertype'];
-            }
-            //校验该用户是否有权限
-            if($isAllow < 1){
+            $validate_url = 'http://usa-test-api.wedomusic.cn/app_get_user_teacher_info?mechanism_id='.$mechanism_id;
+            $params = [
+                'user_id' => $request['user_id'],
+                'token' => $request['token'],
+                'mechanism_id' => $request['mechanism_id'],
+            ];
+            $url = 'http://usa-test-api.wedomusic.cn/app_get_user_teacher_info';
+            $results = $this->postCurl($url,$params);
+            if($results['code'] != 0){
                 throw new Exception('This user does not have permission',2);
             }
-
+            $data = [
+                'user_id' => $userid,
+                'token' => $token,
+            ];
+            $userData = $this->newAppValidateUser($data,$validate_url);
+            Redis :: setex('user_' . $data['user_id'],$date,json_encode($userData));
             //查询教师是否绑定电视
             //先查询所有tv_bind_teacher_*的key
             $keys = Redis::keys('tv_bind_teacher_*');
