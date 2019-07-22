@@ -1,3 +1,5 @@
 /.idea
 Homestead.json
 Homestead.yaml
+./vendor/laravel/lumen-framework/config/database.php
+./config/database.php
