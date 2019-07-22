@@ -1,0 +1,1 @@
+cp config/test/*  config
