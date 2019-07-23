@@ -17,7 +17,7 @@ use Exception;
 
 class TVController extends Controller
 {
-    public $url = 'http://usa-test-tv.wedomusic.cn';
+    public $url = 'https://usa-test-tv.wedomusic.cn';
     public $newUrl = 'http://api.wedomusic.cn';
     public $vipList = [
         '82192057',
@@ -370,13 +370,13 @@ class TVController extends Controller
                 throw new Exception('Two-dimensional code is invalid. Please try again!',2);
             }
             //验证用户信息
-            $validate_url = 'http://usa-test-api.wedomusic.cn/app_validate_user?mechanism_id='.$mechanism_id;
+            $validate_url = 'https://'.UNJP_URL.'/app_validate_user?mechanism_id='.$mechanism_id;
             $params = [
                 'user_id' => $request['user_id'],
                 'token' => $request['token'],
                 'mechanism_id' => $request['mechanism_id'],
             ];
-            $url = 'http://usa-test-api.wedomusic.cn/app_get_user_teacher_info';
+            $url = 'https://'.UNJP_URL.'/app_get_user_teacher_info';
             $results = $this->postCurl($url,$params);
             if($results['code'] != 0){
                 throw new Exception('This user does not have permission',2);

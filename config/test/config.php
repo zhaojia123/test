@@ -6,7 +6,7 @@
  * Time: 下午7:05
  */
 
-define('BEATS9','http://api.9beats.com');
+define('BEATS9','https://api.9beatsusa.com');
 
-define('WEDOMUSIC','http://testapi.wedomusic.cn');
+define('WEDOMUSIC','https://usa-test-api.wedomusic.cn');
 //wedomusic

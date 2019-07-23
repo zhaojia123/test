@@ -7,10 +7,10 @@
  */
 
 
-define('WEDOMUSIC','http://api.wedomusic.cn');
+define('WEDOMUSIC','https://api.9beatsusa.com');
 define('VERSION_IOS','1.0.0.0');
 define('BEATS9','http://api.9beats.com');
 
-define('DEV_WEDOMUSIC','http://usa-test-tv.wedomusic.cn');
+define('DEV_WEDOMUSIC','https://usa-test-tv.wedomusic.cn');
 
 //wedomusic
