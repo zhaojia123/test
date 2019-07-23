@@ -52,6 +52,9 @@ class DoTVLoginLog extends Model {
         'longitude',
         'addr',
         'time',
+        'code',
+        'app_version_code',
+        'app_channel_code',
     ];
 
 

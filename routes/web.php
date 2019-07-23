@@ -26,4 +26,6 @@ $app->post('app_class_ending','TVController@ClassEnding');
 $app->post('book/add','BookController@add');
 $app->post('book/list','BookController@actionList');
 
+$app->post('version/getIos','VersionController@getIos');
+
 
