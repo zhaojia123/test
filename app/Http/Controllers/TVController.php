@@ -345,7 +345,6 @@ class TVController extends Controller
 
         $tvInfo = json_decode($request['code'],true);
         $code = $tvInfo['tv_id'];
-        $tv_info = $tvInfo['tv_info']; //电视品牌信息： Foxcon（富士康）
         $t = $request['t'];
         $v = $request['v'];
         $f = $request['f'];
@@ -353,41 +352,48 @@ class TVController extends Controller
         $token = $request['token'];
         $latitude = $request['latitude'];
         $longitude = $request['longitude'];
-        $mechanism_id = $request['mechanism_id'];
 
-        //当前时间 -  明天0点
-        $yes = date("Y-m-d",strtotime("+1 day"));
-        $date = strtotime($yes) - time();
         //校验二维码是否有记录
         //把传过来的json md5，然后查找
         $qrCode = md5($request['code']);
-
-
+        try {
             //通过code里的变量判断是新老电视
             if (empty($tvInfo['app_channel_code']))
-                throw new Exception('You are using the new version of App to log on to the old version of the TV system',2);
+                throw new Exception('您正在用新版App登陆旧版本的电视系统',2);
 //            if(Redis::zscore('tv_qr_code',$qrCode)){
-//                throw new Exception('Two-dimensional code is invalid. Please try again!',2);
+//                throw new Exception('二维码失效,请重试!',2);
 //            }
             //验证用户信息
-            $validate_url = $this->url.'/app_validate_user?mechanism_id='.$mechanism_id;
+            $validate_url = $this->url.'/app_validate_user?t='.$t.'&v='.$v.'&f='.$f;
 
-            $data = [
-                'user_id' => $userid,
-                'token' => $token,
-            ];
-            $userData = $this->newAppValidateUser($validate_url,$data);
+            //新老接口交替
+            if (empty($f)){
+                $data = [
+                    'user_id' => $userid,
+                    'token' => $token,
+                ];
+                $userData = $this->newAppValidateUser($data,$validate_url);
+                if (empty($userData))
+                    throw new Exception('用户不存在',1);
+                Redis :: set('user_' . $data['user_id'],json_encode($userData));
 
-            if (empty($userData))
-                throw new Exception('user does not exist',1);
-            Redis :: setex('user_' . $data['user_id'],$date,json_encode($userData));
-
-            $isAllow = $userData['user_type_id'];
-
+                $isAllow = $userData['user_type_id'];
+            } else{
+                $data = [
+                    'userid' => $userid,
+                    'token' => $token,
+                ];
+                $userData = $this->AppValidateUser($data,$validate_url);
+                if (empty($userData))
+                    throw new Exception('用户不存在',1);
+                Redis :: set('user_' . $data['userid'],json_encode($userData));
+                $isAllow = $userData['data']['usertype'];
+            }
             //校验该用户是否有权限
             if($isAllow < 1){
-                throw new Exception('This user does not have permission',2);
+                throw new Exception('该用户没有权限',2);
             }
+
             //查询教师是否绑定电视
             //先查询所有tv_bind_teacher_*的key
             $keys = Redis::keys('tv_bind_teacher_*');
@@ -404,16 +410,11 @@ class TVController extends Controller
             if (!in_array($userid,$this->vipList) ){
                 //验证手机端和电视端的类型是否匹配，如果类型不匹配。则把 电视需要的类型 保存到redis里
                 //返回 正在切换系统的提示，并阻止登陆
-                $m_type = empty($request['dev_type']) ||  $request['dev_type'] == 14 ? 11 : $request['dev_type'];  //手机端的系统类型,不传默认为（11）九拍老师
+                $m_type = empty($request['dev_type']) ? 11 : $request['dev_type'];  //手机端的系统类型,不传默认为（11）九拍老师
                 $tv_type = $tvInfo['app_channel_code'];  //电视端的系统类型
-
                 if ($m_type != $tv_type){
-                    //手机端是13，电视端不是富士康，则不切换。
-//                    if ($m_type == 13 && (!strstr($tv_info,'Foxcon'))){
-//                        return array('ret'=>2,'message'=>'该设备无法切换到悦趣','data'=>null);
-//                    }
                     Redis::hset('tv_dev_type',$code.$tv_type,$m_type);
-                    return array('ret'=>2,'message'=>'Switching the system, please wait a moment','data'=>null);
+                    return array('ret'=>2,'message'=>'正在切换系统，请稍等','data'=>null);
                 }
             }
 
@@ -443,7 +444,10 @@ class TVController extends Controller
 
             //存入二维码
             Redis::zadd('tv_qr_code',1,$qrCode);
-
+        } catch (Exception $e) {
+            $this->message['ret'] = $e->getCode();
+            $this->message['message'] = $e->getMessage();
+        }
 
         return $this->message;
     }
