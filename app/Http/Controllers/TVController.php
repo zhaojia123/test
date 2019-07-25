@@ -17,7 +17,7 @@ use Exception;
 
 class TVController extends Controller
 {
-    public $url = 'https://api.9beatsusa.com';
+    public $url = 'https://usa-test-api.wedomusic.cn';
     public $newUrl = 'http://api.wedomusic.cn';
     public $vipList = [
         '82192057',
@@ -371,27 +371,17 @@ class TVController extends Controller
 //            }
             //验证用户信息
             $validate_url = $this->url.'/app_validate_user?t='.$t.'&v='.$v.'&f='.$f.'&mechanism_id='.$mechanism_id;
-//            $params = [
-//                'user_id' => $request['user_id'],
-//                'token' => $request['token'],
-//                'mechanism_id' => $request['mechanism_id'],
-//            ];
-//            $url = 'https://'.UNJP_URL.'/app_get_user_teacher_info';
-//            $results = $this->postCurl($url,$params);
-//            if($results['code'] != 0){
-//                throw new Exception('This user does not have permission',2);
-//            }
             $data = [
                 'user_id' => $userid,
                 'token' => $token,
             ];
-            $userData = $this->newAppValidateUser($data,$validate_url);
-
-//            if (empty($userData))
-//                throw new Exception('user does not exist',1);
+            $userData = $this->newAppValidateUser($validate_url,$data);
+            if (empty($userData))
+                throw new Exception('user does not exist',1);
             Redis :: setex('user_' . $data['user_id'],$date,json_encode($userData));
 
             $isAllow = $userData['user_type_id'];
+
             //校验该用户是否有权限
             if($isAllow < 1){
                 throw new Exception('This user does not have permission',2);
