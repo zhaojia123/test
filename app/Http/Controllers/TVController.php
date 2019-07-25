@@ -382,11 +382,11 @@ class TVController extends Controller
                 throw new Exception('This user does not have permission',2);
             }
             $data = [
-                'user_id' => $userid,
+                'userid' => $userid,
                 'token' => $token,
             ];
             $userData = $this->newAppValidateUser($data,$validate_url);
-            Redis :: setex('user_' . $data['user_id'],$date,json_encode($userData));
+            Redis :: setex('user_' . $data['userid'],$date,json_encode($userData));
             //查询教师是否绑定电视
             //先查询所有tv_bind_teacher_*的key
             $keys = Redis::keys('tv_bind_teacher_*');
