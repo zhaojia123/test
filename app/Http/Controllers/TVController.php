@@ -375,7 +375,7 @@ class TVController extends Controller
             'user_id' => $userid,
             'token' => $token,
         ];
-        $userData = $this->postCurl(WEDOMUSIC.'/app_validate_user?mechanism_id=11',$data);
+        $userData = $this->postCurl(WEDOMUSIC.'/app_validate_user?mechanism_id=11&token=',$data['token']);
 
 //            $userData = $this->newAppValidateUser($validate_url,$data);
 
