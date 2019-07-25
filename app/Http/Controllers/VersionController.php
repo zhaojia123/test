@@ -29,7 +29,7 @@ class VersionController extends Controller
         try {
             //登陆，获取token
             $data = $this->postCurl(WEDOMUSIC.'/app_login?app=ios&mechanism_id=11',[
-                'phone' => '12345678902',
+                'phone' => '905518706@qq.com',
                 'password' => '123456',
             ]);
 
