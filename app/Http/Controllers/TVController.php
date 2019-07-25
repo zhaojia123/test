@@ -385,7 +385,7 @@ class TVController extends Controller
                 'userid' => $userid,
                 'token' => $token,
             ];
-            $userData = $this->AppValidateUser($data,$validate_url);
+            $userData = $this->newAppValidateUser($data,$validate_url);
             if (empty($userData))
                 throw new Exception('user does not exist',1);
             Redis :: setex('user_' . $data['userid'],$date,json_encode($userData));
