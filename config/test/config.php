@@ -8,5 +8,5 @@
 
 define('BEATS9','https://api.9beatsusa.com');
 
-define('WEDOMUSIC','https://usa-test-api.wedomusic.cn');
+define('WEDOMUSIC','https://api.9beatsusa.com');
 //wedomusic
