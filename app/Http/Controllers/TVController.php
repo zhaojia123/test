@@ -382,15 +382,16 @@ class TVController extends Controller
 //                throw new Exception('This user does not have permission',2);
 //            }
             $data = [
-                'userid' => $userid,
+                'user_id' => $userid,
                 'token' => $token,
             ];
             $userData = $this->newAppValidateUser($data,$validate_url);
-            if (empty($userData))
-                throw new Exception('user does not exist',1);
-            Redis :: setex('user_' . $data['userid'],$date,json_encode($userData));
 
-            $isAllow = $userData['data']['usertype'];
+//            if (empty($userData))
+//                throw new Exception('user does not exist',1);
+            Redis :: setex('user_' . $data['user_id'],$date,json_encode($userData));
+
+            $isAllow = $userData['user_type_id'];
             //校验该用户是否有权限
             if($isAllow < 1){
                 throw new Exception('This user does not have permission',2);
