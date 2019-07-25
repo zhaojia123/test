@@ -330,7 +330,9 @@ class TVController extends Controller
 
     private function newAppValidateUser($data,$url = '')
     {
+
         $results = $this->postCurl($url,$data,true);
+
         if ($results['code'] === 0){
             $userData = $results['data'];
             $userData['token'] = $results['token'];
@@ -362,7 +364,7 @@ class TVController extends Controller
         //把传过来的json md5，然后查找
         $qrCode = md5($request['code']);
 
-
+        try {
             //通过code里的变量判断是新老电视
             if (empty($tvInfo['app_channel_code']))
                 throw new Exception('You are using the new version of App to log on to the old version of the TV system',2);
@@ -370,15 +372,13 @@ class TVController extends Controller
 //                throw new Exception('Two-dimensional code is invalid. Please try again!',2);
 //            }
             //验证用户信息
-            //$validate_url = $this->url.'/app_validate_user?mechanism_id='.$mechanism_id;
-        $data = [
-            'user_id' => $userid,
-            'token' => $token,
-        ];
-        $userData = $this->postCurl(WEDOMUSIC.'/app_validate_user?mechanism_id=11&token=',$data['token']);
+            $validate_url = 'https://api.9beatsusa.com/app_validate_user?t='.$t.'&v='.$v.'&f='.$f.'&mechanism_id='.$mechanism_id.'&token='.$token;
+            $data = [
+                'user_id' => $userid,
+                'token' => $token,
 
-//            $userData = $this->newAppValidateUser($validate_url,$data);
-
+            ];
+            $userData = $this->newAppValidateUser($data,$validate_url);
             if (empty($userData))
                 throw new Exception('user does not exist',1);
             Redis :: setex('user_' . $data['user_id'],$date,json_encode($userData));
@@ -444,7 +444,10 @@ class TVController extends Controller
 
             //存入二维码
             Redis::zadd('tv_qr_code',1,$qrCode);
-
+        } catch (Exception $e) {
+            $this->message['ret'] = $e->getCode();
+            $this->message['message'] = $e->getMessage();
+        }
 
         return $this->message;
     }
