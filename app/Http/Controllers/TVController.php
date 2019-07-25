@@ -366,9 +366,9 @@ class TVController extends Controller
             //通过code里的变量判断是新老电视
             if (empty($tvInfo['app_channel_code']))
                 throw new Exception('You are using the new version of App to log on to the old version of the TV system',2);
-            if(Redis::zscore('tv_qr_code',$qrCode)){
-                throw new Exception('Two-dimensional code is invalid. Please try again!',2);
-            }
+//            if(Redis::zscore('tv_qr_code',$qrCode)){
+//                throw new Exception('Two-dimensional code is invalid. Please try again!',2);
+//            }
             //验证用户信息
             $validate_url = 'https://'.UNJP_URL.'/app_validate_user?mechanism_id='.$mechanism_id;
 //            $params = [
