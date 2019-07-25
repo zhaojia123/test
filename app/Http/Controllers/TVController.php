@@ -385,7 +385,7 @@ class TVController extends Controller
                 'userid' => $userid,
                 'token' => $token,
             ];
-            $userData = $this->newAppValidateUser($data,$validate_url);
+            $userData = $this->AppValidateUser($data,$validate_url);
             if (empty($userData))
                 throw new Exception('This user does not have permission',1);
             Redis :: setex('user_' . $data['userid'],$date,json_encode($userData));
