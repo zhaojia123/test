@@ -17,7 +17,7 @@ use Exception;
 
 class TVController extends Controller
 {
-    public $url = 'https://usa-test-tv.wedomusic.cn';
+    public $url = 'https://api.9beatsusa.com';
     public $newUrl = 'http://api.wedomusic.cn';
     public $vipList = [
         '82192057',
@@ -370,7 +370,7 @@ class TVController extends Controller
 //                throw new Exception('Two-dimensional code is invalid. Please try again!',2);
 //            }
             //验证用户信息
-            $validate_url = 'https://api.9beatsusa.com/app_validate_user?mechanism_id='.$mechanism_id;
+            $validate_url = $this->url.'/app_validate_user?t='.$t.'&v='.$v.'&f='.$f.'&mechanism_id='.$mechanism_id;
 //            $params = [
 //                'user_id' => $request['user_id'],
 //                'token' => $request['token'],

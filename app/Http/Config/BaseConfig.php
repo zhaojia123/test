@@ -204,7 +204,7 @@ class BaseConfig
 define('BEECLOUD_APPID','f8a978ea-4ccd-4431-adb2-11b47d2122e6');
 if(env('APP_DEBUG')){
     define('BEECLOUD_APPSECRET','ce22dded-c584-4a6e-bb7c-6b3b671de48a'); //测试
-    define('UNJP_URL','api.9beatsusa.com'); //测试
+    define('UNJP_URL','usa-test-api.wedomusic.cn'); //测试
 }else{
     define('BEECLOUD_APPSECRET','8c636cd4-41f5-48b2-ad83-b3056f0ea8fb'); //正式
     define('UNJP_URL','api.9beatsusa.com'); //正式
