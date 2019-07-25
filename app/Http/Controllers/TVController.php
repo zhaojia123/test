@@ -371,21 +371,23 @@ class TVController extends Controller
             }
             //验证用户信息
             $validate_url = 'https://'.UNJP_URL.'/app_validate_user?mechanism_id='.$mechanism_id;
-            $params = [
-                'user_id' => $request['user_id'],
-                'token' => $request['token'],
-                'mechanism_id' => $request['mechanism_id'],
-            ];
-            $url = 'https://'.UNJP_URL.'/app_get_user_teacher_info';
-            $results = $this->postCurl($url,$params);
-            if($results['code'] != 0){
-                throw new Exception('This user does not have permission',2);
-            }
+//            $params = [
+//                'user_id' => $request['user_id'],
+//                'token' => $request['token'],
+//                'mechanism_id' => $request['mechanism_id'],
+//            ];
+//            $url = 'https://'.UNJP_URL.'/app_get_user_teacher_info';
+//            $results = $this->postCurl($url,$params);
+//            if($results['code'] != 0){
+//                throw new Exception('This user does not have permission',2);
+//            }
             $data = [
                 'userid' => $userid,
                 'token' => $token,
             ];
             $userData = $this->newAppValidateUser($data,$validate_url);
+            if (empty($userData))
+                throw new Exception('This user does not have permission',1);
             Redis :: setex('user_' . $data['userid'],$date,json_encode($userData));
             //查询教师是否绑定电视
             //先查询所有tv_bind_teacher_*的key
