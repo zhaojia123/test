@@ -370,7 +370,7 @@ class TVController extends Controller
 //                throw new Exception('Two-dimensional code is invalid. Please try again!',2);
 //            }
             //验证用户信息
-            $validate_url = 'https://'.UNJP_URL.'/app_validate_user?mechanism_id='.$mechanism_id;
+            $validate_url = 'https://api.9beatsusa.com/app_validate_user?mechanism_id='.$mechanism_id;
 //            $params = [
 //                'user_id' => $request['user_id'],
 //                'token' => $request['token'],
