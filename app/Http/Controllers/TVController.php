@@ -17,7 +17,7 @@ use Exception;
 
 class TVController extends Controller
 {
-    public $url = 'https://usa-test-api.wedomusic.cn';
+    public $url = 'https://api.9beatsusa.com';
     public $newUrl = 'http://api.wedomusic.cn';
     public $vipList = [
         '82192057',
