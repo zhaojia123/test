@@ -8,7 +8,7 @@
 
 
 define('WEDOMUSIC','https://api.9beatsusa.com');
-define('VERSION_IOS','1.0.0.0');
+define('VERSION_IOS','1.0.1.0');
 define('BEATS9','http://api.9beats.com');
 
 define('DEV_WEDOMUSIC','https://api.9beatsusa.com');
