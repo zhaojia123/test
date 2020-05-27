@@ -18,6 +18,7 @@ $app->get('/', function () use ($app) {
 $app->group(['namespace' => 'AppApi'] , function () use ($app) {
 
     $app->group(['namespace' => 'User'], function () use ($app) {
+        //获取用户详情
         $app->post('app_get_user_detail','UserController@getUserDetail');
     });
 
