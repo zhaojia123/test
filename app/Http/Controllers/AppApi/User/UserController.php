@@ -16,6 +16,7 @@ class UserController extends Controller{
 
     public function getUserDetail(Request $request){
         return 1;
+
 //        $model = User::where('id',1)->first();
 //
 //        return ResultHelper::resultAppNothing(ResultCode::$success,$model);
