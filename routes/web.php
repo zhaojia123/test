@@ -19,7 +19,7 @@ $app->group(['namespace' => 'AppApi'] , function () use ($app) {
 
     $app->group(['namespace' => 'User'], function () use ($app) {
         //获取用户详情
-        $app->get('app_get_user_detail','UserController@getUserDetail');
+        $app->post('app_get_user_detail','UserController@getUserDetail');
     });
 
 });
