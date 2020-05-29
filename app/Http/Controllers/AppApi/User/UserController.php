@@ -15,7 +15,8 @@ use App\Http\Libraries\ResultCode;
 class UserController extends Controller{
 
     public function getUserDetail(Request $request){
-        //return 12313131312;
+
+        return "zhaojia";
         $model = User::where('id',1)->first();
 
         return ResultHelper::resultAppNothing(ResultCode::$success,$model);
